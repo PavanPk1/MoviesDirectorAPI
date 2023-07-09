@@ -43,12 +43,20 @@ app.post("/movies/", async (request, response) => {
   response.send("Movie Successfully Added");
 });
 //API 3 GET METHOD
+const convertToCameCase = (dbObject) => {
+  return {
+    movieId: dbObject.movie_id,
+    directorId: dbObject.director_id,
+    movieName: dbObject.movie_name,
+    leadActor: dbObject.lead_actor,
+  };
+};
 app.get("/movies/:movieId/", async (request, response) => {
   const { movieId } = request.params;
   const getMovieQuery = `
   SELECT * FROM movie where movie_id = ${movieId};`;
   const movie = await db.get(getMovieQuery);
-  response.send(movie);
+  response.send(convertToCameCase(movie));
 });
 //API 4 PUT METHOD
 app.put("/movies/:movieId", async (request, response) => {
